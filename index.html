@@ -35,7 +35,7 @@
     <a href="#isa">02 ISA - CISC vs RISC</a>
     <a href="#memoria">03 Von Neumann vs Harvard</a>
     <a href="#pipeline">04 Pipeline</a>
-    <a href="#paralelo">05 Paralelismo</a>
+    <a href="#paralelo">05 Paralelismo &amp; Flynn</a>
     <a href="#amdahl">06 Ley de Amdahl</a>
     <a href="#embebidos">07 Sistemas Embebidos</a>
     <a href="#buses">08 Buses</a>
@@ -53,7 +53,7 @@
       <a href="#isa">02 ISA - CISC vs RISC</a>
       <a href="#memoria">03 Von Neumann vs Harvard</a>
       <a href="#pipeline">04 Pipeline</a>
-      <a href="#paralelo">05 Paralelismo</a>
+      <a href="#paralelo">05 Paralelismo &amp; Flynn</a>
       <a href="#amdahl">06 Ley de Amdahl</a>
       <a href="#embebidos">07 Sistemas Embebidos</a>
       <a href="#buses">08 Buses</a>
@@ -117,6 +117,37 @@
     <span class="callout-icon">//</span>
     <p><strong>Regla de oro</strong>
       Microcontrolador = autosuficiente para sistemas embebidos. Microprocesador = potencia máxima, necesita soporte externo. SoC = término amplio que engloba integración máxima, puede incluir MCU y microprocesador como subtipos.</p>
+  </div>
+
+  <p class="subsection-label">Arquitecturas de núcleo más importantes</p>
+  <div class="compare" style="margin-bottom:24px;">
+    <div class="compare-side">
+      <h3 class="cisc-title">x86 / x86-64</h3>
+      <p class="tagline">CISC — dominante en escritorio y servidores</p>
+      <ul>
+        <li><span class="key">Origen</span> Intel 8086 (1978), extendido a 64 bits por AMD (x86-64)</li>
+        <li><span class="key">ISA</span> CISC: instrucciones de longitud variable, muy complejas</li>
+        <li><span class="key">Internamente</span> Convierte instrucciones complejas en micro-ops tipo RISC para ejecutar con pipeline eficiente</li>
+        <li><span class="key">Fortaleza</span> Retrocompatibilidad total — software de décadas sigue corriendo</li>
+        <li><span class="key">Consumo</span> Mayor consumo energético; diseñado para alto rendimiento con disipación activa</li>
+        <li><span class="key">Ejemplos</span> Intel Core i3/i5/i7/i9, AMD Ryzen, Intel Xeon, AMD EPYC</li>
+        <li><span class="key">Uso</span> PCs, laptops, servidores, workstations, data centers</li>
+      </ul>
+    </div>
+    <div class="compare-side">
+      <h3 class="risc-title">ARM</h3>
+      <p class="tagline">RISC — dominante en móvil, embebidos e IoT</p>
+      <ul>
+        <li><span class="key">Origen</span> Acorn Computers (1985); hoy licenciado por ARM Holdings</li>
+        <li><span class="key">ISA</span> RISC: instrucciones simples de longitud fija, altamente optimizables</li>
+        <li><span class="key">Modelo de negocio</span> ARM no fabrica chips; vende licencias de diseño de núcleos (Cortex-M, Cortex-A, Cortex-R)</li>
+        <li><span class="key">Fortaleza</span> Eficiencia energética superior: máximo rendimiento por watt</li>
+        <li><span class="key">Cortex-M</span> Microcontroladores (STM32, nRF, RP2040) — sin SO, bare-metal</li>
+        <li><span class="key">Cortex-A</span> Procesadores de aplicación (smartphones, SBC, Macbooks)</li>
+        <li><span class="key">Ejemplos</span> Apple M-series, Qualcomm Snapdragon, Raspberry Pi, ESP32 (Xtensa, familia ARM)</li>
+        <li><span class="key">Uso</span> Smartphones, tablets, laptops, IoT, microcontroladores, servidores cloud</li>
+      </ul>
+    </div>
   </div>
 </section>
 
@@ -273,41 +304,7 @@
     </div>
   </div>
 
-  <p class="subsection-label">Bancos de memoria</p>
-  <div class="callout">
-    <span class="callout-icon">//</span>
-    <p><strong>¿Qué son?</strong>
-      Segmentación del espacio de direcciones para expandir la capacidad total más allá del ancho del bus de direcciones. Si tienes 4 bancos de 256 bytes cada uno, la memoria total = 4 × 256 = <strong>1 024 posiciones</strong>. Permite usar más memoria de la que el bus de direcciones puede direccionar directamente.</p>
-  </div>
 
-  <p class="subsection-label">Mapa de memoria (MCU típico)</p>
-  <div class="memory-map">
-    <div class="mmap-row">
-      <span class="mmap-addr">0x0000</span>
-      <span class="mmap-name" style="color:var(--accent3);">Vectores de Reset</span>
-      <span class="mmap-desc">Apunta a la dirección de inicio del programa tras un reset o interrupción.</span>
-    </div>
-    <div class="mmap-row">
-      <span class="mmap-addr">0x0004 +</span>
-      <span class="mmap-name" style="color:var(--accent3);">Vectores de IRQ</span>
-      <span class="mmap-desc">Tabla de vectores de interrupción. Cada IRQ apunta a su ISR (rutina de servicio).</span>
-    </div>
-    <div class="mmap-row">
-      <span class="mmap-addr">SFR</span>
-      <span class="mmap-name" style="color:var(--accent4);">Special Function Regs</span>
-      <span class="mmap-desc">Registros de control de periféricos: GPIO, ADC, timers, UART. Mapeados en memoria.</span>
-    </div>
-    <div class="mmap-row">
-      <span class="mmap-addr">User</span>
-      <span class="mmap-name" style="color:var(--accent2);">Espacio de usuario</span>
-      <span class="mmap-desc">Variables del programa (.data y .bss), heap dinámico.</span>
-    </div>
-    <div class="mmap-row">
-      <span class="mmap-addr">Top</span>
-      <span class="mmap-name" style="color:var(--accent);">Pila (Stack)</span>
-      <span class="mmap-desc">Crece hacia abajo desde la parte alta de la SRAM. Variables locales y retornos de función.</span>
-    </div>
-  </div>
 </section>
 
 
@@ -322,68 +319,37 @@
 
   <div class="callout">
     <span class="callout-icon">//</span>
-    <p><strong>¿Qué es?</strong>
-      Dividir la ejecución de una instrucción en etapas que se solapan. Mientras la instrucción 1 está en Decode, la instrucción 2 ya está en Fetch. Como una línea de ensamblaje. Aumenta el throughput sin aumentar la frecuencia de reloj.</p>
+    <p><strong>¿Qué es el Pipeline?</strong>
+      Técnica que divide la ejecución de una instrucción en etapas independientes que se solapan en el tiempo. En lugar de esperar a que una instrucción termine por completo antes de empezar la siguiente, múltiples instrucciones avanzan simultáneamente en etapas distintas. Resultado: mayor throughput sin necesidad de aumentar la frecuencia de reloj.</p>
   </div>
 
-  <p class="subsection-label">Pipeline clásico de 5 etapas (RISC)</p>
-  <div class="pipeline-diagram">
-    <div class="pipe-stage">
-      <span class="pipe-num">01</span>
-      <span class="pipe-name">IF</span>
-      <span class="pipe-desc">Instruction Fetch — lee la instrucción de la caché/memoria</span>
+  <div class="compare" style="margin-bottom:24px;">
+    <div class="compare-side">
+      <h3 class="cisc-title">Sin Pipeline</h3>
+      <p class="tagline">Una instrucción a la vez, de inicio a fin</p>
+      <ul>
+        <li><span class="key">Comportamiento</span> La CPU termina completamente cada instrucción antes de comenzar la siguiente</li>
+        <li><span class="key">Ciclos</span> Si cada instrucción tarda 4 ciclos, 3 instrucciones = 12 ciclos</li>
+        <li><span class="key">Analogía</span> Una sola persona lavando, enjuagando y secando cada plato antes de tomar el siguiente</li>
+        <li><span class="key">Resultado</span> Los recursos del hardware están ociosos la mayor parte del tiempo</li>
+      </ul>
     </div>
-    <div class="pipe-stage">
-      <span class="pipe-num">02</span>
-      <span class="pipe-name">ID</span>
-      <span class="pipe-desc">Instruction Decode — identifica la operación y lee registros</span>
-    </div>
-    <div class="pipe-stage">
-      <span class="pipe-num">03</span>
-      <span class="pipe-name">EX</span>
-      <span class="pipe-desc">Execute — la ALU realiza la operación aritmética o lógica</span>
-    </div>
-    <div class="pipe-stage">
-      <span class="pipe-num">04</span>
-      <span class="pipe-name">MEM</span>
-      <span class="pipe-desc">Memory Access — lee o escribe en memoria RAM si aplica</span>
-    </div>
-    <div class="pipe-stage">
-      <span class="pipe-num">05</span>
-      <span class="pipe-name">WB</span>
-      <span class="pipe-desc">Write Back — escribe el resultado de vuelta al registro destino</span>
+    <div class="compare-side">
+      <h3 class="risc-title">Con Pipeline</h3>
+      <p class="tagline">Varias instrucciones en progreso al mismo tiempo</p>
+      <ul>
+        <li><span class="key">Comportamiento</span> Mientras la instrucción 1 está en la etapa EX, la instrucción 2 ya está en ID y la instrucción 3 en IF</li>
+        <li><span class="key">Ciclos</span> Las mismas 3 instrucciones se completan en ~6 ciclos con solapamiento</li>
+        <li><span class="key">Analogía</span> Una línea de ensamblaje: lavado, enjuague y secado ocurren en paralelo con platos diferentes</li>
+        <li><span class="key">Resultado</span> Throughput cercano a 1 instrucción por ciclo de reloj</li>
+      </ul>
     </div>
   </div>
 
-  <p class="subsection-label">Riesgos (Hazards) del pipeline</p>
-  <div class="hazard-list">
-    <div class="hazard-item">
-      <span class="hazard-type" style="color:var(--accent3);">Data Hazard</span>
-      <div class="hazard-body">
-        <strong>Riesgo de datos — RAW (Read After Write)</strong>
-        <p>La instrucción N+1 necesita un dato que la instrucción N aún no ha calculado. Solución: <em>forwarding/bypassing</em> (cortocircuitar el resultado hacia la etapa que lo necesita) o insertar burbujas (stalls).</p>
-      </div>
-    </div>
-    <div class="hazard-item">
-      <span class="hazard-type" style="color:var(--accent);">Control Hazard</span>
-      <div class="hazard-body">
-        <strong>Riesgo de control — Branches</strong>
-        <p>Un salto condicional (if/while) hace que las instrucciones ya en el pipeline deban descartarse si el branch se toma. Solución: <em>branch prediction</em> (predecir si el salto se tomará) y ejecución especulativa.</p>
-      </div>
-    </div>
-    <div class="hazard-item">
-      <span class="hazard-type" style="color:var(--accent4);">Structural Hazard</span>
-      <div class="hazard-body">
-        <strong>Riesgo estructural — Recursos</strong>
-        <p>Dos instrucciones necesitan el mismo recurso hardware al mismo tiempo (ej: solo hay una unidad de memoria). Solución: duplicar recursos o insertar stalls.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="callout danger">
+  <div class="callout">
     <span class="callout-icon">//</span>
-    <p><strong>Posible punto de examen</strong>
-      Los hazards son la razón por la que el CPI real es mayor a 1 aunque el pipeline tenga 1 instrucción por ciclo en teoría. Un pipeline de 5 etapas no ejecuta 5× más rápido que sin pipeline debido a stalls y burbujas.</p>
+    <p><strong>Ventajas del Pipeline</strong>
+      Mayor rendimiento (throughput) sin cambiar la frecuencia de reloj. Mejor aprovechamiento de los recursos hardware. Escala bien combinado con otras técnicas como superescalaridad y ejecución fuera de orden. Es la base del rendimiento moderno tanto en RISC (ARM, RISC-V) como en CISC (x86 descompone instrucciones complejas en micro-ops internamente para poder hacer pipeline).</p>
   </div>
 </section>
 
@@ -394,7 +360,7 @@
 <section class="section" id="paralelo">
   <div class="section-header">
     <span class="section-number">05</span>
-    <h2 class="section-title">Paralelismo y <span class="section-accent">Taxonomía Flynn</span></h2>
+    <h2 class="section-title">Paralelismo &amp; Tipos de <span class="section-accent">Arquitecturas Flynn</span></h2>
   </div>
 
   <div class="callout">
@@ -598,16 +564,35 @@
       <span class="card-tag tag-yellow">Bus de Datos</span>
       <h3>Transporta la información</h3>
       <p>Bidireccional. Ancho: 8, 16, 32 o 64 bits. Define cuántos bits mueve la CPU en un ciclo. Un bus de 64 bits puede mover 8 bytes por ciclo.</p>
+      <ul style="margin-top:10px;">
+        <li><span class="key">Ancho</span> A mayor ancho, más datos por ciclo — rendimiento directamente relacionado</li>
+        <li><span class="key">x86-64</span> Bus de datos de 64 bits — mueve 8 bytes por ciclo de bus</li>
+        <li><span class="key">ARM MCU</span> Típicamente 32 bits; algunos Cortex-M0 con bus de 16 bits internamente</li>
+        <li><span class="key">Ejemplo</span> Si lees un int de 32 bits desde memoria, el bus de datos lleva esos 4 bytes en un solo ciclo (en un bus de 32+ bits)</li>
+      </ul>
     </div>
     <div class="card">
       <span class="card-tag tag-red">Bus de Dirección</span>
       <h3>Indica origen o destino</h3>
       <p>Unidireccional (CPU → memoria o periférico). Indica la dirección de memoria a la que va o de la que viene el dato. N bits → 2ᴺ posiciones direccionables.</p>
+      <ul style="margin-top:10px;">
+        <li><span class="key">Fórmula</span> Espacio de memoria = 2ᴺ bytes, donde N = ancho del bus de dirección</li>
+        <li><span class="key">x86-64</span> 48 bits efectivos → 256 TB de espacio de direcciones virtual</li>
+        <li><span class="key">ARM Cortex-M</span> 32 bits → 4 GB de espacio de direcciones (suficiente para MCU)</li>
+        <li><span class="key">Ejemplo</span> Un bus de dirección de 16 bits puede acceder a 2¹⁶ = 65,536 posiciones (64 KB)</li>
+      </ul>
     </div>
     <div class="card">
       <span class="card-tag tag-blue">Bus de Control</span>
       <h3>Sincroniza todo</h3>
       <p>Señales de lectura/escritura (R/W), reloj, interrupciones, bus request/grant. Coordina cuándo y cómo se transfiere la información entre los demás buses.</p>
+      <ul style="margin-top:10px;">
+        <li><span class="key">R/W</span> Señal que indica si la operación es lectura (CPU ← memoria) o escritura (CPU → memoria)</li>
+        <li><span class="key">CLK</span> Señal de reloj que sincroniza las transferencias</li>
+        <li><span class="key">IRQ / NMI</span> Líneas de interrupción — señalan al CPU que un periférico requiere atención</li>
+        <li><span class="key">Bus Request/Grant</span> Permite a otros maestros del bus (DMA) tomar control del bus temporalmente</li>
+        <li><span class="key">RESET</span> Reinicia el estado de todos los componentes del sistema</li>
+      </ul>
     </div>
   </div>
 
@@ -680,11 +665,15 @@
       <p>Timer que cuenta hacia cero. Si el programa no lo reinicia ("patear al perro") antes de que expire, el sistema se reinicia automáticamente. Fundamental en sistemas de misión crítica donde un cuelgue es inaceptable.</p>
     </div>
     <div class="card">
-      <span class="card-tag tag-blue">Polling vs IRQ</span>
-      <h3>¿Cuándo usar cada uno?</h3>
+      <span class="card-tag tag-blue">Polling</span>
+      <h3>Consulta activa y periódica</h3>
+      <p>El CPU consulta repetidamente el estado de un periférico o evento en un bucle, esperando que cambie. Simple de implementar y predecible en tiempo, ya que el CPU siempre sabe cuándo revisará el estado.</p>
       <ul>
-        <li><span class="key">Polling</span> Simple, predecible, bajo jitter. Para eventos muy frecuentes o tiempo real estricto.</li>
-        <li><span class="key">IRQ</span> Eficiente en energía, reactivo. Para eventos asíncronos o esporádicos. Permite sleep modes.</li>
+        <li><span class="key">Comportamiento</span> El programa pregunta continuamente: "¿Ya llegó el dato?", "¿Está listo el periférico?"</li>
+        <li><span class="key">Ventaja</span> Simple, sin overhead de manejo de interrupciones, latencia determinista y baja en eventos muy frecuentes</li>
+        <li><span class="key">Desventaja</span> Desperdicia ciclos de CPU y batería cuando el evento es poco frecuente; el CPU no puede hacer otra cosa mientras espera</li>
+        <li><span class="key">Uso típico</span> Eventos de tiempo real muy frecuentes, protocolos que requieren respuesta inmediata, sistemas simples sin SO</li>
+        <li><span class="key">Ejemplo</span> Leer continuamente el pin de un botón dentro de un while(1) en un Arduino</li>
       </ul>
     </div>
   </div>
@@ -722,7 +711,12 @@
   </div>
 
   <!-- Calculadora de bancos de memoria -->
-  <p class="subsection-label">Calculadora — Bancos de Memoria</p>
+  <p class="subsection-label">Bancos de Memoria</p>
+  <div class="callout" style="margin-bottom:16px;">
+    <span class="callout-icon">//</span>
+    <p><strong>¿Qué son los bancos de memoria?</strong>
+      Segmentación del espacio de direcciones para expandir la capacidad total más allá del ancho del bus de direcciones. Si tienes 4 bancos de 256 bytes cada uno, la memoria total = 4 × 256 = <strong>1 024 posiciones</strong>. Permite usar más memoria de la que el bus de direcciones puede direccionar directamente.</p>
+  </div>
   <div class="amdahl-demo">
     <p class="demo-label">Total de direcciones de memoria</p>
     <div class="slider-row">
