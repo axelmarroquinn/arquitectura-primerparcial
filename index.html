@@ -114,7 +114,7 @@
   </div>
 
   <div class="callout">
-    <span class="callout-icon">💡</span>
+    <span class="callout-icon">//</span>
     <p><strong>Regla de oro</strong>
       Microcontrolador = autosuficiente para sistemas embebidos. Microprocesador = potencia máxima, necesita soporte externo. SoC = término amplio que engloba integración máxima, puede incluir MCU y microprocesador como subtipos.</p>
   </div>
@@ -193,7 +193,7 @@
   </table>
 
   <div class="callout">
-    <span class="callout-icon">⚡</span>
+    <span class="callout-icon">//</span>
     <p><strong>Punto de examen frecuente</strong>
       El CISC moderno también usa pipelining, descomponiendo instrucciones complejas en micro-ops internamente. En la práctica, Intel y AMD toman lo mejor de ambos mundos: ISA CISC por compatibilidad, pero ejecución interna tipo RISC.</p>
   </div>
@@ -275,7 +275,7 @@
 
   <p class="subsection-label">Bancos de memoria</p>
   <div class="callout">
-    <span class="callout-icon">📐</span>
+    <span class="callout-icon">//</span>
     <p><strong>¿Qué son?</strong>
       Segmentación del espacio de direcciones para expandir la capacidad total más allá del ancho del bus de direcciones. Si tienes 4 bancos de 256 bytes cada uno, la memoria total = 4 × 256 = <strong>1 024 posiciones</strong>. Permite usar más memoria de la que el bus de direcciones puede direccionar directamente.</p>
   </div>
@@ -321,7 +321,7 @@
   </div>
 
   <div class="callout">
-    <span class="callout-icon">⚙️</span>
+    <span class="callout-icon">//</span>
     <p><strong>¿Qué es?</strong>
       Dividir la ejecución de una instrucción en etapas que se solapan. Mientras la instrucción 1 está en Decode, la instrucción 2 ya está en Fetch. Como una línea de ensamblaje. Aumenta el throughput sin aumentar la frecuencia de reloj.</p>
   </div>
@@ -381,7 +381,7 @@
   </div>
 
   <div class="callout danger">
-    <span class="callout-icon">⚠️</span>
+    <span class="callout-icon">//</span>
     <p><strong>Posible punto de examen</strong>
       Los hazards son la razón por la que el CPI real es mayor a 1 aunque el pipeline tenga 1 instrucción por ciclo en teoría. Un pipeline de 5 etapas no ejecuta 5× más rápido que sin pipeline debido a stalls y burbujas.</p>
   </div>
@@ -398,7 +398,7 @@
   </div>
 
   <div class="callout">
-    <span class="callout-icon">🧱</span>
+    <span class="callout-icon">//</span>
     <p><strong>Power Wall (2005)</strong>
       Hasta ~2005 se aumentaba el rendimiento subiendo la frecuencia de reloj (GHz). El problema: la potencia dinámica P = α·C·V²·f escala linealmente con f, pero el calor generado no se podía disipar de forma efectiva. La solución fue cambiar de estrategia: menos GHz, más núcleos.</p>
   </div>
@@ -448,9 +448,9 @@
 
   <p class="subsection-label">Jerarquía de caché compartida (arquitectura multinúcleo)</p>
   <div class="callout">
-    <span class="callout-icon">🔗</span>
+    <span class="callout-icon">//</span>
     <p><strong>Coherencia de caché</strong>
-      Con múltiples núcleos compartiendo L3 y RAM, puede haber inconsistencias si dos núcleos modifican el mismo dato. Se resuelve con protocolos de coherencia de caché (MESI: Modified, Exclusive, Shared, Invalid) que se comunican por el bus de coherencia.</p>
+      Con múltiples núcleos compartiendo L3 y RAM, puede haber inconsistencias si dos núcleos modifican el mismo dato. Se resuelve con protocolos de coherencia de caché que monitorean el estado de los datos entre núcleos a través del bus compartido.</p>
   </div>
 
   <p class="subsection-label">Arquitecturas para IA / IoT / Edge</p>
@@ -521,7 +521,7 @@
   </div>
 
   <div class="callout">
-    <span class="callout-icon">🔑</span>
+    <span class="callout-icon">//</span>
     <p><strong>Consecuencia práctica</strong>
       La Ley de Amdahl explica por qué simplemente agregar más núcleos no siempre escala. Apple Silicon usa núcleos P (Performance, optimizan la fracción serial) y núcleos E (Efficiency, manejan lo paralelo) — exactamente la respuesta correcta al problema que describe Amdahl.</p>
   </div>
@@ -579,8 +579,6 @@
       <tr><td>Ejecución</td><td>Código interpretado (BASIC)</td><td>Código compilado (C/C++)</td><td>SO Linux, binarios nativos</td></tr>
       <tr><td>Memoria programa</td><td>Flash 2 KB</td><td>Flash 32 KB</td><td>SD card (GB)</td></tr>
       <tr><td>Memoria datos</td><td>EEPROM 256 B</td><td>SRAM 2 KB / EEPROM 1 KB</td><td>RAM DDR4 1–8 GB</td></tr>
-      <tr><td>Consumo</td><td>Muy bajo (~1 mA)</td><td>Bajo (~50 mA)</td><td>Alto (~600 mA – 3 A)</td></tr>
-      <tr><td>Velocidad reloj</td><td>~8 MHz</td><td>16 MHz</td><td>1.8 GHz</td></tr>
     </tbody>
   </table>
 </section>
@@ -614,7 +612,7 @@
   </div>
 
   <div class="callout">
-    <span class="callout-icon">📡</span>
+    <span class="callout-icon">//</span>
     <p><strong>Protocolos de comunicación en MCU</strong>
       UART (serial asíncrono, 2 hilos, simple), SPI (síncrono, 4 hilos, rápido, full-duplex), I2C (síncrono, 2 hilos, multi-dispositivo, más lento). Los tres son los más comunes en sistemas embebidos y examen.</p>
   </div>
@@ -643,11 +641,6 @@
       <h3>Ciclos por instrucción</h3>
       <p>Promedio de ciclos de reloj necesarios para ejecutar una instrucción. RISC ideal = 1 CPI. En la práctica, hazards elevan el CPI efectivo.</p>
     </div>
-    <div class="card">
-      <span class="card-tag tag-blue">Tiempo de ejecución</span>
-      <h3>CPU Time</h3>
-      <p>Tiempo_CPU = Nro. instrucciones × CPI × Período de reloj = Nro. instrucciones × CPI / Frecuencia.</p>
-    </div>
   </div>
 
   <!-- Calculadora MIPS -->
@@ -655,13 +648,13 @@
     <p class="demo-label">Calculadora de MIPS</p>
     <div class="slider-row">
       <label>Frecuencia (GHz)</label>
-      <input type="number" id="mipsFreq" value="1" min="0.01" max="5" step="0.01"
+      <input type="number" id="mipsFreq" value="1" min="0.01" max="5" step="0.01" inputmode="decimal" inputmode="decimal"
         style="flex:1; background: var(--bg); border: 1px solid var(--border2); color: var(--text); font-family: var(--mono); font-size: 14px; padding: 6px 10px; border-radius: 3px; outline:none;" />
       <span class="slider-val" style="color:var(--text-dim);">GHz</span>
     </div>
     <div class="slider-row">
       <label>CPI</label>
-      <input type="number" id="mipsCPI" value="2" min="0.1" max="10" step="0.1"
+      <input type="number" id="mipsCPI" value="2" min="0.1" max="10" step="0.1" inputmode="decimal" inputmode="decimal"
         style="flex:1; background: var(--bg); border: 1px solid var(--border2); color: var(--text); font-family: var(--mono); font-size: 14px; padding: 6px 10px; border-radius: 3px; outline:none;" />
       <span class="slider-val" style="color:var(--text-dim);">ciclos</span>
     </div>
@@ -734,13 +727,13 @@
     <p class="demo-label">Total de direcciones de memoria</p>
     <div class="slider-row">
       <label>Número de bancos</label>
-      <input type="number" id="memBanks" value="4" min="1" max="64" step="1"
+      <input type="number" id="memBanks" value="4" min="1" max="64" step="1" inputmode="numeric" inputmode="numeric"
         style="flex:1; background: var(--bg); border: 1px solid var(--border2); color: var(--text); font-family: var(--mono); font-size: 14px; padding: 6px 10px; border-radius: 3px; outline:none;" />
       <span class="slider-val" style="color:var(--text-dim);">bancos</span>
     </div>
     <div class="slider-row">
       <label>Tamaño por banco (bytes)</label>
-      <input type="number" id="memBankSize" value="256" min="1" max="65536" step="1"
+      <input type="number" id="memBankSize" value="256" min="1" max="65536" step="1" inputmode="numeric" inputmode="numeric"
         style="flex:1; background: var(--bg); border: 1px solid var(--border2); color: var(--text); font-family: var(--mono); font-size: 14px; padding: 6px 10px; border-radius: 3px; outline:none;" />
       <span class="slider-val" style="color:var(--text-dim);">bytes</span>
     </div>
