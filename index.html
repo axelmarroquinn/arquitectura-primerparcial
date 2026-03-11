@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arq. de Computadoras I — Primer Parcial 🏛️ </title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<!-- ════════════════════════════════════════════
+     HEADER
+════════════════════════════════════════════ -->
+<header>
+  <div class="header-glow"></div>
+  <div class="container">
+    <div class="chip-label">Séptimo Semestre · Parcial 01</div>
+    <h1>Arquitectura de<br><em>Computadoras I</em></h1>
+    <div class="header-meta">
+    </div>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════════
+     NAV
+════════════════════════════════════════════ -->
+<nav class="toc" aria-label="Secciones">
+  <div class="toc-inner">
+    <a href="#tipos">01 uP & uC</a>
+    <a href="#isa">02 ISA - CISC vs RISC</a>
+    <a href="#memoria">03 Von Neumann vs Harvard</a>
+    <a href="#pipeline">04 Pipeline</a>
+    <a href="#paralelo">05 Paralelismo</a>
+    <a href="#amdahl">06 Ley de Amdahl</a>
+    <a href="#embebidos">07 Sistemas Embebidos</a>
+    <a href="#buses">08 Buses</a>
+    <a href="#misc">09 Conceptos Clave</a>
+  </div>
+
+  <!-- Solo visible en móvil -->
+  <select class="toc-select" aria-label="Navegar a sección">
+    <option value="">— Ir a sección —</option>
+    <option value="#tipos">01 uP &amp; uC</option>
+    <option value="#isa">02 ISA - CISC vs RISC</option>
+    <option value="#memoria">03 Von Neumann vs Harvard</option>
+    <option value="#pipeline">04 Pipeline</option>
+    <option value="#paralelo">05 Paralelismo</option>
+    <option value="#amdahl">06 Ley de Amdahl</option>
+    <option value="#embebidos">07 Sistemas Embebidos</option>
+    <option value="#buses">08 Buses</option>
+    <option value="#misc">09 Conceptos Clave</option>
+  </select>
+</nav>
+
+<!-- ════════════════════════════════════════════
+     MAIN
+════════════════════════════════════════════ -->
+<main>
+<div class="container">
+
+
+<!-- ══════════════════════════════════════════
+  01 · TIPOS DE PROCESADORES
+══════════════════════════════════════════ -->
+<section class="section" id="tipos">
+  <div class="section-header">
+    <span class="section-number">01</span>
+    <h2 class="section-title">Tipos de <span class="section-accent">Procesadores</span></h2>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <span class="card-tag tag-red">Microprocesador</span>
+      <h3>Solo el CPU</h3>
+      <p>CPU puro sin memoria ni periféricos integrados. Necesita placa base, RAM, chipset y chips de I/O para funcionar.</p>
+      <ul>
+        <li><span class="key">Ventajas</span> Alta velocidad, multitarea, potencia de cómputo</li>
+        <li><span class="key">Desventajas</span> Alto costo, alto consumo energético, tamaño mayor</li>
+        <li><span class="key">Ejemplos</span> Intel Core i3/i5/i7/i9, AMD Ryzen, Intel Xeon</li>
+        <li><span class="key">Uso</span> PCs, laptops, servidores, workstations</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-green">Microcontrolador (MCU)</span>
+      <h3>Sistema completo en un chip</h3>
+      <p>Integra CPU + memoria Flash/SRAM/EEPROM + GPIO + ADC/DAC + UART/SPI/I2C. Autosuficiente, bajo consumo.</p>
+      <ul>
+        <li><span class="key">Ventajas</span> Económico, compacto, arranque inmediato, sin SO</li>
+        <li><span class="key">Desventajas</span> Potencia y memoria muy limitadas</li>
+        <li><span class="key">Ejemplos</span> Arduino (ATmega), ESP32, PIC, STM32</li>
+        <li><span class="key">Uso</span> IoT, electrodomésticos, industria, wearables</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-blue">SoC</span>
+      <h3>System on Chip</h3>
+      <p>Integración máxima: CPU + GPU + RAM + radio + I/O en un solo die de silicio. La línea con el MCU se difumina.</p>
+      <ul>
+        <li><span class="key">Smartphones</span> Qualcomm Snapdragon, MediaTek Dimensity, Apple A-Series</li>
+        <li><span class="key">Laptops</span> Apple M-Series (SoC + memoria unificada)</li>
+        <li><span class="key">Ventaja</span> Latencia mínima entre componentes, menor consumo</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout">
+    <span class="callout-icon">💡</span>
+    <p><strong>Regla de oro</strong>
+      Microcontrolador = autosuficiente para sistemas embebidos. Microprocesador = potencia máxima, necesita soporte externo. SoC = término amplio que engloba integración máxima, puede incluir MCU y microprocesador como subtipos.</p>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+  02 · ISA: CISC vs RISC
+══════════════════════════════════════════ -->
+<section class="section" id="isa">
+  <div class="section-header">
+    <span class="section-number">02</span>
+    <h2 class="section-title">ISA — <span class="section-accent">CISC vs RISC</span></h2>
+  </div>
+
+  <p class="subsection-label">Definiciones clave</p>
+  <div class="card-grid" style="margin-bottom:24px;">
+    <div class="card">
+      <span class="card-tag tag-blue">ISA</span>
+      <h3>Instruction Set Architecture</h3>
+      <p>Interfaz entre el software y el hardware. Define qué instrucciones puede ejecutar el procesador, cómo se codifican y cómo interactúan con la memoria.</p>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-yellow">Microarquitectura</span>
+      <h3>Implementación física de la ISA</h3>
+      <p>Cómo se implementa internamente la ISA con transistores, cachés y lógica. Dos procesadores pueden compartir la misma ISA (x86) pero tener microarquitecturas distintas.</p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="compare-side">
+      <h3 class="cisc-title">CISC</h3>
+      <p class="tagline">"Hace mucho en una sola instrucción"</p>
+      <ul>
+        <li><span class="key">Instrucciones</span> Complejas, longitud variable, muchas operaciones por instrucción</li>
+        <li><span class="key">Memoria</span> Opera directamente sobre ella (no solo registros)</li>
+        <li><span class="key">Pipeline</span> Decodifica internamente en micro-operaciones (micro-ops)</li>
+        <li><span class="key">CPI</span> Variable — puede ser mayor a 1 por instrucción compleja</li>
+        <li><span class="key">Registros</span> Pocos registros de propósito general</li>
+        <li><span class="key">Compilador</span> Más simple — la CPU hace el trabajo</li>
+        <li><span class="key">Ejemplo ISA</span> x86, x86-64 (Intel, AMD)</li>
+        <li><span class="key">Uso</span> PC, laptops, servidores, software legacy</li>
+      </ul>
+    </div>
+    <div class="compare-side">
+      <h3 class="risc-title">RISC</h3>
+      <p class="tagline">"Instrucciones simples, un ciclo de reloj"</p>
+      <ul>
+        <li><span class="key">Instrucciones</span> Pocas, simples, longitud fija</li>
+        <li><span class="key">Memoria</span> Solo LOAD/STORE — todo lo demás opera en registros</li>
+        <li><span class="key">Pipeline</span> Diseñado nativamente para pipelining eficiente</li>
+        <li><span class="key">CPI</span> ~1 ciclo por instrucción</li>
+        <li><span class="key">Registros</span> Muchos registros de propósito general (ej: 32)</li>
+        <li><span class="key">Compilador</span> Más complejo — optimiza para usar instrucciones simples</li>
+        <li><span class="key">Ejemplo ISA</span> ARM, RISC-V, MIPS</li>
+        <li><span class="key">Uso</span> Smartphones, Macbook, IoT, microcontroladores</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="subsection-label">Integración ISA + Arquitectura de Memoria</p>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Combinación</th>
+        <th>ISA</th>
+        <th>Memoria</th>
+        <th>Aplicación típica</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Von Neumann + CISC</td><td>x86</td><td>Bus compartido</td><td>PCs antiguas, sistemas industriales legacy</td></tr>
+      <tr><td>Harvard + RISC</td><td>AVR, PIC</td><td>Buses separados</td><td>Arduino, microcontroladores PIC</td></tr>
+      <tr><td>Harvard Mod. + RISC</td><td>ARM Cortex-A</td><td>Caché L1 sep. + L2/L3 compartida</td><td>Smartphones, Macbook, Raspberry Pi</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <span class="callout-icon">⚡</span>
+    <p><strong>Punto de examen frecuente</strong>
+      El CISC moderno también usa pipelining, descomponiendo instrucciones complejas en micro-ops internamente. En la práctica, Intel y AMD toman lo mejor de ambos mundos: ISA CISC por compatibilidad, pero ejecución interna tipo RISC.</p>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+  03 · ARQUITECTURAS DE MEMORIA
+══════════════════════════════════════════ -->
+<section class="section" id="memoria">
+  <div class="section-header">
+    <span class="section-number">03</span>
+    <h2 class="section-title">Arquitecturas de <span class="section-accent">Memoria</span></h2>
+  </div>
+
+  <div class="compare" style="margin-bottom:24px;">
+    <div class="compare-side">
+      <h3 class="von-title">Von Neumann</h3>
+      <p class="tagline">Un solo bus para datos e instrucciones</p>
+      <ul>
+        <li><span class="key">Problema</span> Cuello de botella de Von Neumann: no puede buscar instrucción y dato al mismo tiempo</li>
+        <li><span class="key">Ciclo</span> Fetch → Decode → Execute (secuencial)</li>
+        <li><span class="key">Ventaja</span> Simplicidad y flexibilidad: misma RAM para código y datos</li>
+        <li><span class="key">Uso</span> Microprocesadores, PCs, Raspberry Pi, Laptops</li>
+      </ul>
+    </div>
+    <div class="compare-side">
+      <h3 class="har-title">Harvard</h3>
+      <p class="tagline">Buses separados para datos e instrucciones</p>
+      <ul>
+        <li><span class="key">Ventaja</span> Acceso simultáneo: mayor velocidad, sin cuello de botella</li>
+        <li><span class="key">Memorias</span> Dos memorias físicamente separadas: programa y datos</li>
+        <li><span class="key">Desventaja</span> Mayor complejidad de hardware, inflexibilidad</li>
+        <li><span class="key">Uso</span> Microcontroladores: Arduino (ATmega), PIC, DSPs</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="border: 1px solid var(--border); border-radius: 4px; margin-bottom: 20px;">
+    <span class="card-tag tag-blue">Harvard Modificada</span>
+    <h3>El estándar en procesadores modernos</h3>
+    <p>Núcleo que usa arquitectura Harvard internamente (caché L1 separada para instrucciones y datos), pero una sola memoria RAM externa. Combina velocidad de Harvard con la flexibilidad de Von Neumann.</p>
+    <ul style="margin-top:12px;">
+      <li>L1-I: caché de instrucciones, separada (Harvard puro)</li>
+      <li>L1-D: caché de datos, separada (Harvard puro)</li>
+      <li>L2 unificada: instrucciones + datos compartidos (aquí se "modifica")</li>
+      <li>L3 compartida entre núcleos → RAM DDR externa</li>
+    </ul>
+  </div>
+
+  <p class="subsection-label">Jerarquía de memoria — microprocesadores</p>
+  <div class="memory-pyramid">
+    <div class="mem-level"><span class="mem-name">Registros</span><span class="mem-desc">Dentro del CPU, acceso en ~1 ciclo. Pocas docenas de palabras.</span><span class="mem-tag fast">~1 ciclo</span></div>
+    <div class="mem-level"><span class="mem-name">Caché L1</span><span class="mem-desc">Por núcleo, separada en L1-I y L1-D. Típicamente 32–64 KB cada una.</span><span class="mem-tag fast">~4 ciclos</span></div>
+    <div class="mem-level"><span class="mem-name">Caché L2</span><span class="mem-desc">Por núcleo, unificada (instrucciones + datos). 256 KB – 1 MB.</span><span class="mem-tag med">~12 ciclos</span></div>
+    <div class="mem-level"><span class="mem-name">Caché L3</span><span class="mem-desc">Compartida entre todos los núcleos. 8–32 MB. Coherencia via protocolo de bus.</span><span class="mem-tag med">~40 ciclos</span></div>
+    <div class="mem-level"><span class="mem-name">RAM (DDR)</span><span class="mem-desc">Memoria principal, volátil. Acceso ~100 ns. Gigabytes.</span><span class="mem-tag slow">~100 ns</span></div>
+    <div class="mem-level"><span class="mem-name">SSD / HDD</span><span class="mem-desc">Almacenamiento persistente no volátil. Terabytes.</span><span class="mem-tag slow">&gt;100 µs</span></div>
+  </div>
+
+  <p class="subsection-label">Memoria en microcontroladores</p>
+  <div class="card-grid" style="margin-bottom:24px;">
+    <div class="card">
+      <span class="card-tag tag-red">Flash</span>
+      <h3>No volátil — el programa</h3>
+      <p>Guarda el código compilado que se ejecuta. Persiste al apagar. Escritura lenta (solo al programar). En Arduino UNO: 32 KB.</p>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-green">SRAM</span>
+      <h3>Volátil — variables en ejecución</h3>
+      <p>Variables globales, locales, pila (stack). Se borra al apagar. Acceso muy rápido. En Arduino UNO: solo 2 KB. El recurso más escaso.</p>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-blue">EEPROM</span>
+      <h3>No volátil — configuraciones</h3>
+      <p>Guarda datos que deben persistir entre reinicios (calibraciones, ajustes de usuario). Direccionable byte a byte. Escritura lenta, ~100K ciclos de escritura. Arduino UNO: 1 KB.</p>
+    </div>
+  </div>
+
+  <p class="subsection-label">Bancos de memoria</p>
+  <div class="callout">
+    <span class="callout-icon">📐</span>
+    <p><strong>¿Qué son?</strong>
+      Segmentación del espacio de direcciones para expandir la capacidad total más allá del ancho del bus de direcciones. Si tienes 4 bancos de 256 bytes cada uno, la memoria total = 4 × 256 = <strong>1 024 posiciones</strong>. Permite usar más memoria de la que el bus de direcciones puede direccionar directamente.</p>
+  </div>
+
+  <p class="subsection-label">Mapa de memoria (MCU típico)</p>
+  <div class="memory-map">
+    <div class="mmap-row">
+      <span class="mmap-addr">0x0000</span>
+      <span class="mmap-name" style="color:var(--accent3);">Vectores de Reset</span>
+      <span class="mmap-desc">Apunta a la dirección de inicio del programa tras un reset o interrupción.</span>
+    </div>
+    <div class="mmap-row">
+      <span class="mmap-addr">0x0004 +</span>
+      <span class="mmap-name" style="color:var(--accent3);">Vectores de IRQ</span>
+      <span class="mmap-desc">Tabla de vectores de interrupción. Cada IRQ apunta a su ISR (rutina de servicio).</span>
+    </div>
+    <div class="mmap-row">
+      <span class="mmap-addr">SFR</span>
+      <span class="mmap-name" style="color:var(--accent4);">Special Function Regs</span>
+      <span class="mmap-desc">Registros de control de periféricos: GPIO, ADC, timers, UART. Mapeados en memoria.</span>
+    </div>
+    <div class="mmap-row">
+      <span class="mmap-addr">User</span>
+      <span class="mmap-name" style="color:var(--accent2);">Espacio de usuario</span>
+      <span class="mmap-desc">Variables del programa (.data y .bss), heap dinámico.</span>
+    </div>
+    <div class="mmap-row">
+      <span class="mmap-addr">Top</span>
+      <span class="mmap-name" style="color:var(--accent);">Pila (Stack)</span>
+      <span class="mmap-desc">Crece hacia abajo desde la parte alta de la SRAM. Variables locales y retornos de función.</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+  04 · PIPELINE
+══════════════════════════════════════════ -->
+<section class="section" id="pipeline">
+  <div class="section-header">
+    <span class="section-number">04</span>
+    <h2 class="section-title">Pipeline — <span class="section-accent">Ejecución por Etapas</span></h2>
+  </div>
+
+  <div class="callout">
+    <span class="callout-icon">⚙️</span>
+    <p><strong>¿Qué es?</strong>
+      Dividir la ejecución de una instrucción en etapas que se solapan. Mientras la instrucción 1 está en Decode, la instrucción 2 ya está en Fetch. Como una línea de ensamblaje. Aumenta el throughput sin aumentar la frecuencia de reloj.</p>
+  </div>
+
+  <p class="subsection-label">Pipeline clásico de 5 etapas (RISC)</p>
+  <div class="pipeline-diagram">
+    <div class="pipe-stage">
+      <span class="pipe-num">01</span>
+      <span class="pipe-name">IF</span>
+      <span class="pipe-desc">Instruction Fetch — lee la instrucción de la caché/memoria</span>
+    </div>
+    <div class="pipe-stage">
+      <span class="pipe-num">02</span>
+      <span class="pipe-name">ID</span>
+      <span class="pipe-desc">Instruction Decode — identifica la operación y lee registros</span>
+    </div>
+    <div class="pipe-stage">
+      <span class="pipe-num">03</span>
+      <span class="pipe-name">EX</span>
+      <span class="pipe-desc">Execute — la ALU realiza la operación aritmética o lógica</span>
+    </div>
+    <div class="pipe-stage">
+      <span class="pipe-num">04</span>
+      <span class="pipe-name">MEM</span>
+      <span class="pipe-desc">Memory Access — lee o escribe en memoria RAM si aplica</span>
+    </div>
+    <div class="pipe-stage">
+      <span class="pipe-num">05</span>
+      <span class="pipe-name">WB</span>
+      <span class="pipe-desc">Write Back — escribe el resultado de vuelta al registro destino</span>
+    </div>
+  </div>
+
+  <p class="subsection-label">Riesgos (Hazards) del pipeline</p>
+  <div class="hazard-list">
+    <div class="hazard-item">
+      <span class="hazard-type" style="color:var(--accent3);">Data Hazard</span>
+      <div class="hazard-body">
+        <strong>Riesgo de datos — RAW (Read After Write)</strong>
+        <p>La instrucción N+1 necesita un dato que la instrucción N aún no ha calculado. Solución: <em>forwarding/bypassing</em> (cortocircuitar el resultado hacia la etapa que lo necesita) o insertar burbujas (stalls).</p>
+      </div>
+    </div>
+    <div class="hazard-item">
+      <span class="hazard-type" style="color:var(--accent);">Control Hazard</span>
+      <div class="hazard-body">
+        <strong>Riesgo de control — Branches</strong>
+        <p>Un salto condicional (if/while) hace que las instrucciones ya en el pipeline deban descartarse si el branch se toma. Solución: <em>branch prediction</em> (predecir si el salto se tomará) y ejecución especulativa.</p>
+      </div>
+    </div>
+    <div class="hazard-item">
+      <span class="hazard-type" style="color:var(--accent4);">Structural Hazard</span>
+      <div class="hazard-body">
+        <strong>Riesgo estructural — Recursos</strong>
+        <p>Dos instrucciones necesitan el mismo recurso hardware al mismo tiempo (ej: solo hay una unidad de memoria). Solución: duplicar recursos o insertar stalls.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-icon">⚠️</span>
+    <p><strong>Posible punto de examen</strong>
+      Los hazards son la razón por la que el CPI real es mayor a 1 aunque el pipeline tenga 1 instrucción por ciclo en teoría. Un pipeline de 5 etapas no ejecuta 5× más rápido que sin pipeline debido a stalls y burbujas.</p>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+  05 · PARALELISMO Y MULTINÚCLEO
+══════════════════════════════════════════ -->
+<section class="section" id="paralelo">
+  <div class="section-header">
+    <span class="section-number">05</span>
+    <h2 class="section-title">Paralelismo y <span class="section-accent">Taxonomía Flynn</span></h2>
+  </div>
+
+  <div class="callout">
+    <span class="callout-icon">🧱</span>
+    <p><strong>Power Wall (2005)</strong>
+      Hasta ~2005 se aumentaba el rendimiento subiendo la frecuencia de reloj (GHz). El problema: la potencia dinámica P = α·C·V²·f escala linealmente con f, pero el calor generado no se podía disipar de forma efectiva. La solución fue cambiar de estrategia: menos GHz, más núcleos.</p>
+  </div>
+
+  <p class="subsection-label">Tipos de paralelismo</p>
+  <div class="card-grid" style="margin-bottom:24px;">
+    <div class="card">
+      <span class="card-tag tag-yellow">ILP</span>
+      <h3>Instruction-Level Parallelism</h3>
+      <p>Múltiples instrucciones ejecutándose dentro de un solo hilo. Implementado con pipeline, ejecución fuera de orden (OOO), ejecución especulativa y superescalaridad.</p>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-green">TLP</span>
+      <h3>Thread-Level Parallelism</h3>
+      <p>Múltiples hilos corriendo en diferentes núcleos físicos al mismo tiempo. Base de los procesadores multinúcleo (Intel i7, Apple M-series).</p>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-blue">DLP</span>
+      <h3>Data-Level Parallelism</h3>
+      <p>La misma operación aplicada a múltiples datos simultáneamente. Base de las GPUs y vectorización de código (SIMD). Fundamental en IA y gráficos.</p>
+    </div>
+  </div>
+
+  <p class="subsection-label">Taxonomía de Flynn</p>
+  <div class="flynn-grid">
+    <div class="flynn-cell">
+      <div class="flynn-label dim">SISD</div>
+      <div class="flynn-name">Single Instruction, Single Data</div>
+      <p>Computación clásica pre-2005. Un hilo, un dato. PCs antiguas con un solo núcleo sin SIMD.</p>
+    </div>
+    <div class="flynn-cell active">
+      <div class="flynn-label">SIMD</div>
+      <div class="flynn-name">Single Instruction, Multiple Data</div>
+      <p>Una instrucción opera sobre múltiples datos en paralelo. Base de GPUs e IA. Ejemplo: sumar 8 floats de 32 bits en un solo ciclo con instrucciones AVX en x86.</p>
+    </div>
+    <div class="flynn-cell">
+      <div class="flynn-label dim">MISD</div>
+      <div class="flynn-name">Multiple Instruction, Single Data</div>
+      <p>Múltiples instrucciones sobre un mismo dato. Teórico, rarísimo en práctica. Usado en sistemas de tolerancia a fallos (aeroespacial).</p>
+    </div>
+    <div class="flynn-cell active">
+      <div class="flynn-label green">MIMD</div>
+      <div class="flynn-name">Multiple Instruction, Multiple Data</div>
+      <p>El estándar moderno: múltiples núcleos, cada uno con su propio flujo de instrucciones y datos independientes. Intel, AMD, Apple M-series, servidores.</p>
+    </div>
+  </div>
+
+  <p class="subsection-label">Jerarquía de caché compartida (arquitectura multinúcleo)</p>
+  <div class="callout">
+    <span class="callout-icon">🔗</span>
+    <p><strong>Coherencia de caché</strong>
+      Con múltiples núcleos compartiendo L3 y RAM, puede haber inconsistencias si dos núcleos modifican el mismo dato. Se resuelve con protocolos de coherencia de caché (MESI: Modified, Exclusive, Shared, Invalid) que se comunican por el bus de coherencia.</p>
+  </div>
+
+  <p class="subsection-label">Arquitecturas para IA / IoT / Edge</p>
+  <div class="card-grid">
+    <div class="card">
+      <span class="card-tag tag-green">TPU</span>
+      <h3>Tensor Processing Unit</h3>
+      <p>Diseñado por Google para acelerar operaciones de matrices (multiplicaciones de tensores). Usa un <em>array sistólico</em> de unidades de multiplicación-acumulación (MAC).</p>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-yellow">NPU</span>
+      <h3>Neural Processing Unit</h3>
+      <p>Acelerador de IA integrado en SoC de consumo (Qualcomm Hexagon, Apple Neural Engine). Permite inferencia local en móvil sin enviar datos a la nube.</p>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-blue">TinyML</span>
+      <h3>IA en microcontroladores</h3>
+      <p>Redes neuronales preentrenadas y cuantizadas corriendo en MCU. Reconocimiento de voz, gestos o imágenes completamente offline. Ej: TensorFlow Lite Micro.</p>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-red">Edge Computing</span>
+      <h3>Cómputo cerca de la fuente</h3>
+      <p>Procesar los datos en o cerca del sensor/dispositivo en lugar de enviar todo a la nube. Reduce latencia, mejora privacidad y ahorra ancho de banda. Ej: cámaras inteligentes, Alexa, vehículos autónomos.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+  06 · LEY DE AMDAHL
+══════════════════════════════════════════ -->
+<section class="section" id="amdahl">
+  <div class="section-header">
+    <span class="section-number">06</span>
+    <h2 class="section-title">Ley de <span class="section-accent">Amdahl</span></h2>
+  </div>
+
+  <div class="formula-box">
+    <code class="formula">Speedup = 1 / ( (1 − P) + P/N )</code>
+    <div class="vars">
+      <div class="var"><span class="sym">P</span> porcentaje paralelizable del código (0 a 1)</div>
+      <div class="var"><span class="sym">N</span> número de procesadores disponibles</div>
+      <div class="var"><span class="sym">(1−P)</span> fracción serial — el techo absoluto del speedup</div>
+    </div>
+    <div class="formula-example">
+      <p>Ejemplo clásico del parcial: 95% paralelo, fracción serial = 5%, N → ∞</p>
+      <code>
+        S = 1 / [(1 − 0.95) + 0.95/∞]<br>
+        S = 1 / [0.05 + 0]<br>
+        S = 1 / 0.05 = <strong>20× — el máximo posible sin importar cuántos CPUs agregues.</strong>
+      </code>
+    </div>
+  </div>
+
+  <div class="amdahl-demo">
+    <p class="demo-label">Calculadora interactiva — Ley de Amdahl</p>
+    <div class="slider-row">
+      <label>% paralelo (P)</label>
+      <input type="range" id="pSlider" min="0" max="99" value="80" />
+      <span class="slider-val" id="pVal">80%</span>
+    </div>
+    <div class="slider-row">
+      <label>Núcleos (N)</label>
+      <input type="range" id="nSlider" min="1" max="64" value="4" />
+      <span class="slider-val" id="nVal">4</span>
+    </div>
+    <div class="amdahl-result" id="amdahlResult">— ×</div>
+  </div>
+
+  <div class="callout">
+    <span class="callout-icon">🔑</span>
+    <p><strong>Consecuencia práctica</strong>
+      La Ley de Amdahl explica por qué simplemente agregar más núcleos no siempre escala. Apple Silicon usa núcleos P (Performance, optimizan la fracción serial) y núcleos E (Efficiency, manejan lo paralelo) — exactamente la respuesta correcta al problema que describe Amdahl.</p>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+  07 · SISTEMAS EMBEBIDOS
+══════════════════════════════════════════ -->
+<section class="section" id="embebidos">
+  <div class="section-header">
+    <span class="section-number">07</span>
+    <h2 class="section-title">Sistemas <span class="section-accent">Embebidos</span></h2>
+  </div>
+
+  <div class="compare" style="margin-bottom:20px;">
+    <div class="compare-side">
+      <h3 class="mcu-title">MCU — Microcontroller Unit</h3>
+      <p class="tagline">"Todo en un chip — sin sistema operativo"</p>
+      <ul>
+        <li><span class="key">Arquitectura</span> Harvard (buses de programa y datos separados)</li>
+        <li><span class="key">ISA</span> RISC (AVR, ARM Cortex-M, PIC)</li>
+        <li><span class="key">Software</span> Bucle infinito directo, sin SO, interrupciones para eventos</li>
+        <li><span class="key">Memoria</span> Flash (código) + SRAM (datos) + EEPROM (persistencia)</li>
+        <li><span class="key">Ejemplos</span> Arduino UNO (ATmega328P), ESP32, STM32, PICAXE</li>
+      </ul>
+    </div>
+    <div class="compare-side">
+      <h3 class="sbc-title">SBC — Single Board Computer</h3>
+      <p class="tagline">"Placa madre miniatura — con Linux"</p>
+      <ul>
+        <li><span class="key">Arquitectura</span> Von Neumann (bus unificado)</li>
+        <li><span class="key">ISA</span> RISC (ARM Cortex-A)</li>
+        <li><span class="key">Software</span> Linux completo, Python, múltiples procesos/hilos</li>
+        <li><span class="key">Memoria</span> RAM DDR + almacenamiento en tarjeta SD</li>
+        <li><span class="key">Ejemplos</span> Raspberry Pi 4 (4× Cortex-A72), Orange Pi, Banana Pi</li>
+      </ul>
+    </div>
+  </div>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Característica</th>
+        <th>PICAXE</th>
+        <th>Arduino UNO</th>
+        <th>Raspberry Pi 4</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Tipo</td><td>MCU</td><td>MCU</td><td>SBC</td></tr>
+      <tr><td>CPU</td><td>PIC (Microchip)</td><td>ATmega328P</td><td>ARM Cortex-A72 ×4</td></tr>
+      <tr><td>Arquitectura</td><td>Harvard</td><td>Harvard</td><td>Von Neumann</td></tr>
+      <tr><td>ISA</td><td>RISC (PIC)</td><td>RISC (AVR)</td><td>RISC (ARMv8-A)</td></tr>
+      <tr><td>Ejecución</td><td>Código interpretado (BASIC)</td><td>Código compilado (C/C++)</td><td>SO Linux, binarios nativos</td></tr>
+      <tr><td>Memoria programa</td><td>Flash 2 KB</td><td>Flash 32 KB</td><td>SD card (GB)</td></tr>
+      <tr><td>Memoria datos</td><td>EEPROM 256 B</td><td>SRAM 2 KB / EEPROM 1 KB</td><td>RAM DDR4 1–8 GB</td></tr>
+      <tr><td>Consumo</td><td>Muy bajo (~1 mA)</td><td>Bajo (~50 mA)</td><td>Alto (~600 mA – 3 A)</td></tr>
+      <tr><td>Velocidad reloj</td><td>~8 MHz</td><td>16 MHz</td><td>1.8 GHz</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+  08 · BUSES
+══════════════════════════════════════════ -->
+<section class="section" id="buses">
+  <div class="section-header">
+    <span class="section-number">08</span>
+    <h2 class="section-title">Buses y <span class="section-accent">Comunicación</span></h2>
+  </div>
+
+  <div class="card-grid" style="margin-bottom:24px;">
+    <div class="card">
+      <span class="card-tag tag-yellow">Bus de Datos</span>
+      <h3>Transporta la información</h3>
+      <p>Bidireccional. Ancho: 8, 16, 32 o 64 bits. Define cuántos bits mueve la CPU en un ciclo. Un bus de 64 bits puede mover 8 bytes por ciclo.</p>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-red">Bus de Dirección</span>
+      <h3>Indica origen o destino</h3>
+      <p>Unidireccional (CPU → memoria o periférico). Indica la dirección de memoria a la que va o de la que viene el dato. N bits → 2ᴺ posiciones direccionables.</p>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-blue">Bus de Control</span>
+      <h3>Sincroniza todo</h3>
+      <p>Señales de lectura/escritura (R/W), reloj, interrupciones, bus request/grant. Coordina cuándo y cómo se transfiere la información entre los demás buses.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <span class="callout-icon">📡</span>
+    <p><strong>Protocolos de comunicación en MCU</strong>
+      UART (serial asíncrono, 2 hilos, simple), SPI (síncrono, 4 hilos, rápido, full-duplex), I2C (síncrono, 2 hilos, multi-dispositivo, más lento). Los tres son los más comunes en sistemas embebidos y examen.</p>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+  09 · CONCEPTOS MISCELÁNEOS
+══════════════════════════════════════════ -->
+<section class="section" id="misc">
+  <div class="section-header">
+    <span class="section-number">09</span>
+    <h2 class="section-title">Conceptos <span class="section-accent">Clave</span></h2>
+  </div>
+
+  <p class="subsection-label">Rendimiento y métricas</p>
+  <div class="card-grid" style="margin-bottom:24px;">
+    <div class="card">
+      <span class="card-tag tag-yellow">MIPS</span>
+      <h3>Millones de instrucciones por segundo</h3>
+      <p>Métrica de rendimiento del procesador. Calculadora de MIPS abajo.</p>
+      <code style="display:block; margin-top:10px; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 3px; font-size:14px;">MIPS = f (MHz) / CPI</code>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-red">CPI</span>
+      <h3>Ciclos por instrucción</h3>
+      <p>Promedio de ciclos de reloj necesarios para ejecutar una instrucción. RISC ideal = 1 CPI. En la práctica, hazards elevan el CPI efectivo.</p>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-blue">Tiempo de ejecución</span>
+      <h3>CPU Time</h3>
+      <p>Tiempo_CPU = Nro. instrucciones × CPI × Período de reloj = Nro. instrucciones × CPI / Frecuencia.</p>
+    </div>
+  </div>
+
+  <!-- Calculadora MIPS -->
+  <div class="amdahl-demo" style="margin-bottom:24px;">
+    <p class="demo-label">Calculadora de MIPS</p>
+    <div class="slider-row">
+      <label>Frecuencia (GHz)</label>
+      <input type="number" id="mipsFreq" value="1" min="0.01" max="5" step="0.01"
+        style="flex:1; background: var(--bg); border: 1px solid var(--border2); color: var(--text); font-family: var(--mono); font-size: 14px; padding: 6px 10px; border-radius: 3px; outline:none;" />
+      <span class="slider-val" style="color:var(--text-dim);">GHz</span>
+    </div>
+    <div class="slider-row">
+      <label>CPI</label>
+      <input type="number" id="mipsCPI" value="2" min="0.1" max="10" step="0.1"
+        style="flex:1; background: var(--bg); border: 1px solid var(--border2); color: var(--text); font-family: var(--mono); font-size: 14px; padding: 6px 10px; border-radius: 3px; outline:none;" />
+      <span class="slider-val" style="color:var(--text-dim);">ciclos</span>
+    </div>
+    <div class="amdahl-result" id="mipsResult">500 MIPS</div>
+  </div>
+
+  <p class="subsection-label">Mecanismos especiales</p>
+  <div class="card-grid" style="margin-bottom:24px;">
+    <div class="card">
+      <span class="card-tag tag-green">Interrupciones</span>
+      <h3>Eventos prioritarios</h3>
+      <p>Pausan el programa principal para atender un evento urgente. Más eficientes que <em>Polling</em> (que consulta constantemente y drena ciclos/batería).</p>
+      <ul>
+        <li>CPU pausa hilo actual</li>
+        <li>Guarda contexto (PC, registros)</li>
+        <li>Salta a la ISR (rutina de servicio)</li>
+        <li>Al terminar, restaura contexto y continúa</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-red">Watchdog Timer</span>
+      <h3>Guardián del sistema</h3>
+      <p>Timer que cuenta hacia cero. Si el programa no lo reinicia ("patear al perro") antes de que expire, el sistema se reinicia automáticamente. Fundamental en sistemas de misión crítica donde un cuelgue es inaceptable.</p>
+    </div>
+    <div class="card">
+      <span class="card-tag tag-blue">Polling vs IRQ</span>
+      <h3>¿Cuándo usar cada uno?</h3>
+      <ul>
+        <li><span class="key">Polling</span> Simple, predecible, bajo jitter. Para eventos muy frecuentes o tiempo real estricto.</li>
+        <li><span class="key">IRQ</span> Eficiente en energía, reactivo. Para eventos asíncronos o esporádicos. Permite sleep modes.</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="subsection-label">Consumo energético</p>
+  <div class="formula-box red-accent">
+    <code class="formula">P_dinámica = α · C · V² · f</code>
+    <div class="vars">
+      <div class="var"><span class="sym">α</span> factor de actividad — fracción de transistores que conmutan</div>
+      <div class="var"><span class="sym">C</span> capacitancia total del chip</div>
+      <div class="var"><span class="sym">V²</span> voltaje al cuadrado — el parámetro más impactante</div>
+      <div class="var"><span class="sym">f</span> frecuencia (relación lineal)</div>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="compare-side">
+      <h3 class="cisc-title">Race to Sleep</h3>
+      <p class="tagline">Enciende al máximo, termina rápido, duerme</p>
+      <ul>
+        <li><span class="key">Idea</span> Ejecuta tan rápido como sea posible para minimizar el tiempo activo total</li>
+        <li><span class="key">Ventaja</span> Menor energía si los periodos de sleep son largos y la tarea es corta</li>
+        <li><span class="key">Uso</span> Sensores IoT con batería que envían un dato y duermen</li>
+      </ul>
+    </div>
+    <div class="compare-side">
+      <h3 class="risc-title">Slow &amp; Steady</h3>
+      <p class="tagline">Reduce voltaje y frecuencia al mínimo suficiente</p>
+      <ul>
+        <li><span class="key">Idea</span> Bajar V reduce P cuadráticamente — el mayor ahorro de energía</li>
+        <li><span class="key">Ventaja</span> Consumo constante y predecible para cargas de trabajo continuas</li>
+        <li><span class="key">Uso</span> Wearables, dispositivos de transmisión continua</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Calculadora de bancos de memoria -->
+  <p class="subsection-label">Calculadora — Bancos de Memoria</p>
+  <div class="amdahl-demo">
+    <p class="demo-label">Total de direcciones de memoria</p>
+    <div class="slider-row">
+      <label>Número de bancos</label>
+      <input type="number" id="memBanks" value="4" min="1" max="64" step="1"
+        style="flex:1; background: var(--bg); border: 1px solid var(--border2); color: var(--text); font-family: var(--mono); font-size: 14px; padding: 6px 10px; border-radius: 3px; outline:none;" />
+      <span class="slider-val" style="color:var(--text-dim);">bancos</span>
+    </div>
+    <div class="slider-row">
+      <label>Tamaño por banco (bytes)</label>
+      <input type="number" id="memBankSize" value="256" min="1" max="65536" step="1"
+        style="flex:1; background: var(--bg); border: 1px solid var(--border2); color: var(--text); font-family: var(--mono); font-size: 14px; padding: 6px 10px; border-radius: 3px; outline:none;" />
+      <span class="slider-val" style="color:var(--text-dim);">bytes</span>
+    </div>
+    <div class="amdahl-result" id="memBankResult">4 × 256 = 1024 Bytes (1.00 KB)</div>
+  </div>
+</section>
+
+
+</div><!-- /.container -->
+</main>
+
+<!-- ════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════ -->
+<footer>
+  <p>ARQUITECTURA DE COMPUTADORAS I · PRIMER PARCIAL · SÉPTIMO SEMESTRE</p>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
