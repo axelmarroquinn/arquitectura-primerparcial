@@ -111,14 +111,33 @@
   calcMem();
 })();
 
-// ─── NAV MÓVIL (select) ───
+/* ─── NAV MÓVIL (dropdown custom) ─── */
 (function initMobileNav() {
-  const sel = document.querySelector('.toc-select');
-  if (!sel) return;
-  sel.addEventListener('change', () => {
-    if (sel.value) {
-      document.querySelector(sel.value)?.scrollIntoView({ behavior: 'smooth' });
-      sel.value = ''; // resetea para poder reusar
-    }
+  const dropdown = document.getElementById('tocDropdown');
+  const btn      = document.getElementById('tocDropdownBtn');
+  const menu     = document.getElementById('tocDropdownMenu');
+  const label    = document.getElementById('tocDropdownLabel');
+
+  if (!dropdown || !btn || !menu) return;
+
+  // Abrir/cerrar
+  btn.addEventListener('click', () => {
+    dropdown.classList.toggle('open');
+  });
+
+  // Navegar al elegir una sección
+  menu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+      label.textContent = a.textContent;
+      dropdown.classList.remove('open');
+    });
+  });
+
+  // Cerrar al hacer click fuera
+  document.addEventListener('click', e => {
+    if (!dropdown.contains(e.target)) dropdown.classList.remove('open');
   });
 })();

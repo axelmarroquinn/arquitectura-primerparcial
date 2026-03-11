@@ -31,7 +31,7 @@
 ════════════════════════════════════════════ -->
 <nav class="toc" aria-label="Secciones">
   <div class="toc-inner">
-    <a href="#tipos">01 uP & uC</a>
+    <a href="#tipos">01 uP &amp; uC</a>
     <a href="#isa">02 ISA - CISC vs RISC</a>
     <a href="#memoria">03 Von Neumann vs Harvard</a>
     <a href="#pipeline">04 Pipeline</a>
@@ -42,19 +42,24 @@
     <a href="#misc">09 Conceptos Clave</a>
   </div>
 
-  <!-- Solo visible en móvil -->
-  <select class="toc-select" aria-label="Navegar a sección">
-    <option value="">— Ir a sección —</option>
-    <option value="#tipos">01 uP &amp; uC</option>
-    <option value="#isa">02 ISA - CISC vs RISC</option>
-    <option value="#memoria">03 Von Neumann vs Harvard</option>
-    <option value="#pipeline">04 Pipeline</option>
-    <option value="#paralelo">05 Paralelismo</option>
-    <option value="#amdahl">06 Ley de Amdahl</option>
-    <option value="#embebidos">07 Sistemas Embebidos</option>
-    <option value="#buses">08 Buses</option>
-    <option value="#misc">09 Conceptos Clave</option>
-  </select>
+  <!-- Dropdown custom — solo visible en móvil -->
+  <div class="toc-dropdown" id="tocDropdown">
+    <button class="toc-dropdown-btn" id="tocDropdownBtn">
+      <span id="tocDropdownLabel"> Ir a sección </span>
+      <span class="arrow">▼</span>
+    </button>
+    <div class="toc-dropdown-menu" id="tocDropdownMenu">
+      <a href="#tipos">01 uP &amp; uC</a>
+      <a href="#isa">02 ISA - CISC vs RISC</a>
+      <a href="#memoria">03 Von Neumann vs Harvard</a>
+      <a href="#pipeline">04 Pipeline</a>
+      <a href="#paralelo">05 Paralelismo</a>
+      <a href="#amdahl">06 Ley de Amdahl</a>
+      <a href="#embebidos">07 Sistemas Embebidos</a>
+      <a href="#buses">08 Buses</a>
+      <a href="#misc">09 Conceptos Clave</a>
+    </div>
+  </div>
 </nav>
 
 <!-- ════════════════════════════════════════════
