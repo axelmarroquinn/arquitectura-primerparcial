@@ -13,12 +13,12 @@
   --text:        #d4d8e8;
   --text-dim:    #6b7394;
   --text-dimmer: #3a3f55;
-  --accent:      #e8c547;   /* amarillo chip */
-  --accent2:     #4af0c4;   /* verde RISC/Harvard */
-  --accent3:     #f07070;   /* rojo CISC/Von Neumann */
-  --accent4:     #7fa0f0;   /* azul SoC/Buses */
+  --accent:      #16df77;
+  --accent2:     #34a853;
+  --accent3:     #f07070;
+  --accent4:     #7fa0f0;
   --mono:  'IBM Plex Mono', monospace;
-  --serif: 'Playfair Display', serif;
+  --serif: 'Space Grotesk', sans-serif;
   --sans:  'IBM Plex Sans', sans-serif;
 }
 
@@ -70,7 +70,7 @@ header {
   position: absolute; top: -120px; left: 50%;
   transform: translateX(-50%);
   width: 700px; height: 300px;
-  background: radial-gradient(ellipse, rgba(232,197,71,.08) 0%, transparent 70%);
+  background: radial-gradient(ellipse, rgba(11,128,67,.10) 0%, transparent 70%);
   pointer-events: none;
 }
 .chip-label {
@@ -86,10 +86,10 @@ header {
 h1 {
   font-family: var(--serif);
   font-size: clamp(36px, 6vw, 64px);
-  font-weight: 900; line-height: 1.05; letter-spacing: -.02em; color: #fff;
+  font-weight: 700; line-height: 1.05; letter-spacing: -.03em; color: #fff;
   opacity: 0; animation: fadeUp .7s ease .2s forwards;
 }
-h1 em { font-style: italic; color: var(--accent); }
+h1 em { font-style: normal; color: var(--accent); }
 .header-meta {
   font-family: var(--mono); font-size: 12px; color: var(--text-dim);
   margin-top: 20px; display: flex; gap: 24px; flex-wrap: wrap;
