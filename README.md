@@ -2,7 +2,7 @@
 
 Sitio web de estudio para el primer parcial de Arquitectura de Computadoras I, Séptimo Semestre.
 
-🔗 **[Ver sitio →](https://axelmarroquinn.github.io/arquitectura-primerparcial)**
+🔗 https://axelmarroquinn.github.io/arquitectura-primerparcial
 
 ## Contenido
 
